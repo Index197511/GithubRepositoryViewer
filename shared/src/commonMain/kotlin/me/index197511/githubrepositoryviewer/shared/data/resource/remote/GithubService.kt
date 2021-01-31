@@ -5,7 +5,11 @@ import io.ktor.client.features.json.*
 import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 
-class GithubService {
+interface IGithubService {
+    suspend fun getTrendRepositories(): List<RepositoryEntity>
+}
+
+class GithubService : IGithubService {
     companion object {
         const val API_URL = "https://ghapi.huchen.dev/repositories"
     }
@@ -17,6 +21,6 @@ class GithubService {
         }
     }
 
-    suspend fun getTrendRepositories(): List<RepositoryEntity> =
+    override suspend fun getTrendRepositories(): List<RepositoryEntity> =
         httpClient.get(API_URL)
 }
