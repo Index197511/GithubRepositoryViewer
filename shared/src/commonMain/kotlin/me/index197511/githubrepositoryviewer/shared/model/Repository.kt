@@ -5,7 +5,11 @@ data class Repository(
     val name: String,
     val url: String,
     val description: String,
-    val language: String,
-    val languageColor: String,
+    val language: Language,
     val stars: Int
+)
+
+data class Language(
+    val language: String,
+    val color: String
 )
