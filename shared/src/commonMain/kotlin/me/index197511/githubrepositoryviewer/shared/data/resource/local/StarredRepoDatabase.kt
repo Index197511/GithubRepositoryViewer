@@ -8,7 +8,7 @@ import me.index197511.githubrepositoryviewer.shared.db.StarredRepositoryDatabase
 import me.index197511.githubrepositoryviewer.shared.model.Language
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
-class StarredRepositoryDatabase(databaseDriverFactory: StarredRepositoryDatabaseDriverFactory) {
+class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactory) {
     private val database = StarredRepositoryDatabase(databaseDriverFactory.createDriver())
     private val dbQuery = database.starredRepositoryDatabaseQueries
 
