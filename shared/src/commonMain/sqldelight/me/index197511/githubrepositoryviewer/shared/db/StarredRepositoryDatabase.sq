@@ -1,0 +1,22 @@
+CREATE TABLE StarredRepository (
+    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    author TEXT NOT NULL,
+    name TEXT NOT NULL,
+    url TEXT NOT NULL,
+    description TEXT,
+    language TEXT NOT NULL,
+    languageColor TEXT NOT NULL,
+    stars INTEGER
+);
+
+insertStarredRepository:
+    INSERT INTO StarredRepository(author, name, url, description, language, languageColor, stars)
+    VALUES(?, ?, ?, ?, ?, ?, ?);
+
+removeStarredRepository:
+    DELETE FROM StarredRepository
+    WHERE id = ?;
+
+loadAllStarredRepository:
+    SELECT * FROM StarredRepository
+    ORDER BY id DESC;
