@@ -3,10 +3,10 @@ CREATE TABLE StarredRepository (
     author TEXT NOT NULL,
     name TEXT NOT NULL,
     url TEXT NOT NULL,
-    description TEXT,
+    description TEXT NOT NULL,
     language TEXT NOT NULL,
     languageColor TEXT NOT NULL,
-    stars INTEGER
+    stars INTEGER as Int
 );
 
 insertStarredRepository:
