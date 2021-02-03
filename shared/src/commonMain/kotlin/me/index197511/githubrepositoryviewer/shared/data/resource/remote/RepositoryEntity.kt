@@ -11,6 +11,8 @@ data class RepositoryEntity(
     val author: String,
     @SerialName("name")
     val name: String,
+    @SerialName("avatar")
+    val avatar: String,
     @SerialName("url")
     val url: String,
     @SerialName("description")
@@ -23,5 +25,5 @@ data class RepositoryEntity(
     val stars: Int
 ) {
     fun toModel() =
-        Repository(author, name, url, description, Language(language, languageColor), stars)
+        Repository(author, name, avatar, url, description, Language(language, languageColor), stars)
 }

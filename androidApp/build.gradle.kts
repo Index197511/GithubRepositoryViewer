@@ -29,6 +29,10 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
+
+    // Glide
+    val glideVersion = "4.11.0"
+    implementation("com.github.bumptech.glide:glide:$glideVersion")
 }
 
 android {

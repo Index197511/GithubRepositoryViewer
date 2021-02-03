@@ -19,6 +19,7 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
         dbQuery.insertStarredRepository(
             repository.author,
             repository.name,
+            repository.avatar,
             repository.url,
             repository.description,
             repository.language.language,
@@ -36,6 +37,7 @@ fun StarredRepository.toRepository() =
     Repository(
         author,
         name,
+        avatar,
         url,
         description,
         Language(language, languageColor),
