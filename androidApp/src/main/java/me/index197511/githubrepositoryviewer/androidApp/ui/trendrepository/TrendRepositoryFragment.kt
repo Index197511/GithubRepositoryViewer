@@ -11,14 +11,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.onCommit
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -32,7 +31,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.compose.ui.zIndex
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
@@ -41,6 +39,10 @@ import com.bumptech.glide.request.transition.Transition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
+import me.index197511.githubrepositoryviewer.shared.data.repository.GithubRepository
+import me.index197511.githubrepositoryviewer.shared.data.resource.remote.GithubService
+import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Language
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
@@ -55,14 +57,31 @@ class TrendRepositoryFragment : Fragment() {
             ViewGroup.LayoutParams.MATCH_PARENT
         )
         setContent {
-            Text("Hi")
+            MaterialTheme {
+                TrendRepositoryView()
+            }
         }
     }
 }
 
 @Composable
 fun TrendRepositoryView() {
-    val viewModel: TrendRepositoryViewModel = viewModel()
+    val viewModel: TrendRepositoryViewModel =
+        TrendRepositoryViewModel(GithubRepository(GithubService()))
+    viewModel.getTrendRepository()
+    val trendRepos = viewModel.trendRepos.collectAsState(initial = DataState.Empty)
+    when (trendRepos.value) {
+        is DataState.Empty -> {
+            Text(text = "NON REPOS")
+        }
+        is DataState.Success -> {
+            LazyColumn(contentPadding = PaddingValues(start = 16.dp, end = 16.dp)) {
+                items((trendRepos.value as DataState.Success<List<Repository>>).data) {
+                    RepositoryListItem(repository = it)
+                }
+            }
+        }
+    }
 
 }
 
@@ -71,14 +90,15 @@ fun RepositoryListItem(repository: Repository) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable { Log.i("Index197511", "CLICKED") }
+        .height(120.dp)
         .padding(8.dp)
         .zIndex(8f)
     ) {
         User(author = repository.author, avatarUrl = repository.avatar)
-        Space(height = 8)
+        Space(height = 4)
         RepositoryName(name = repository.name)
         Space(height = 8)
-        Row(modifier = Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Language(language = repository.language)
             Space(width = 8)
             Star(star = repository.stars)
@@ -90,7 +110,7 @@ fun RepositoryListItem(repository: Repository) {
 fun RepositoryName(name: String) {
     Text(
         text = name,
-        fontSize = 20.sp,
+        fontSize = 24.sp,
         fontFamily = FontFamily.SansSerif,
         fontWeight = FontWeight.Bold,
         modifier = Modifier.fillMaxWidth()
@@ -108,20 +128,21 @@ fun Star(star: Int) {
 
 @Composable
 fun Language(language: Language) {
-    Row {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
-                .preferredSize(20.dp)
+                .preferredSize(12.dp)
                 .clip(CircleShape)
-                .background(Color.Red)
+                .background(Color.fromString(language.color))
         )
+        Space(width = 4)
         Text(text = language.language, fontSize = 12.sp, color = Color.Gray)
     }
 }
 
 @Composable
 fun User(author: String, avatarUrl: String) {
-    Row(modifier = Modifier.fillMaxWidth()) {
+    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Avatar(avatarUrl = avatarUrl)
         Space(width = 8)
         Text(text = author, textAlign = TextAlign.Center, fontSize = 16.sp)
@@ -155,11 +176,12 @@ fun Avatar(avatarUrl: String) {
     image.value?.let {
         Surface(
             modifier = Modifier
-                .preferredSize(30.dp),
+                .preferredSize(30.dp)
+                .clip(CircleShape),
             color = MaterialTheme.colors.onSurface.copy(0.2f)
         ) {
             Log.i("Index197511", "IMAGE")
-            Image(it)
+            Image(bitmap = it)
         }
     }
 
@@ -184,7 +206,7 @@ fun RepositoryListItem_Preview() {
             avatar = "https://github.com/Index197511.png",
             url = "https://repository....",
             description = "This Repository is Sample.",
-            language = Language(language = "Kotlin", color = "#FFFFFF"),
+            language = Language(language = "Kotlin", color = "#0000FF"),
             stars = 2
         )
     )
