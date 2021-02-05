@@ -13,9 +13,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,26 +67,55 @@ class TrendRepositoryFragment : Fragment() {
 
 @Composable
 fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
-    val trendRepos = viewModel.trendRepos.collectAsState(initial = DataState.Empty)
-    when (trendRepos.value) {
-        is DataState.Empty -> {
-            Text(text = "NON REPOS")
-        }
+    val trendRepos: DataState<List<Repository>> by viewModel.trendRepos.collectAsState(initial = DataState.Empty)
+
+    when (trendRepos) {
         is DataState.Loading -> {
-            Text(text = "Loading...")
+            LoadingView()
         }
         is DataState.Success -> {
             LazyColumn {
-                items((trendRepos.value as DataState.Success<List<Repository>>).data) {
+                items((trendRepos as DataState.Success<List<Repository>>).data) {
                     RepositoryListItem(repository = it)
                 }
             }
         }
         is DataState.Error -> {
-            Text(text = "ERROR")
+            ErrorView(onClick = { viewModel.getTrendRepository() })
+        }
+        else -> {
         }
     }
+}
 
+@Composable
+fun ErrorView(onClick: () -> Unit) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(text = "Oops, an error occurred", textAlign = TextAlign.Center, color = Color.Gray)
+            Space(height = 4)
+            Text(text = "please try again", textAlign = TextAlign.Center, color = Color.Gray)
+            Space(height = 8)
+            Button(onClick = onClick) {
+                Text(text = "RETRY")
+            }
+        }
+    }
+}
+
+@Composable
+fun LoadingView() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .wrapContentSize(Alignment.Center)
+    ) {
+        CircularProgressIndicator()
+    }
 }
 
 @Composable
