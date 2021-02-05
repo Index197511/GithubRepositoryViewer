@@ -11,7 +11,7 @@ interface IGithubService {
 
 class GithubService : IGithubService {
     companion object {
-        const val API_URL = "https://ghapi.huchen.dev/repositories"
+        const val API_URL = "https://api.github.com/search/repositories?q=language:kotlin"
     }
 
     private val httpClient = HttpClient {
