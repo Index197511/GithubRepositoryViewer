@@ -28,6 +28,7 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -68,20 +69,23 @@ class TrendRepositoryFragment : Fragment() {
 
 @Composable
 fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
-//    val viewModel: TrendRepositoryViewModel =
-//        TrendRepositoryViewModel(GithubRepository(GithubService()))
-//    viewModel.getTrendRepository()
     val trendRepos = viewModel.trendRepos.collectAsState(initial = DataState.Empty)
     when (trendRepos.value) {
         is DataState.Empty -> {
             Text(text = "NON REPOS")
         }
+        is DataState.Loading -> {
+            Text(text = "Loading...")
+        }
         is DataState.Success -> {
-            LazyColumn(contentPadding = PaddingValues(start = 16.dp, end = 16.dp)) {
+            LazyColumn {
                 items((trendRepos.value as DataState.Success<List<Repository>>).data) {
                     RepositoryListItem(repository = it)
                 }
             }
+        }
+        is DataState.Error -> {
+            Text(text = "ERROR")
         }
     }
 
@@ -92,15 +96,21 @@ fun RepositoryListItem(repository: Repository) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable { Log.i("Index197511", "CLICKED") }
-        .height(120.dp)
-        .padding(8.dp)
+        .wrapContentHeight()
+        .padding(16.dp)
         .zIndex(8f)
     ) {
         User(author = repository.author, avatarUrl = repository.avatarUrl)
         Space(height = 4)
         RepositoryName(name = repository.name)
+        repository.description?.let {
+            Space(height = 4)
+            Description(description = it)
+        }
         Space(height = 8)
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Language(language = repository.language)
             Space(width = 8)
             Star(star = repository.stars)
@@ -114,8 +124,19 @@ fun RepositoryName(name: String) {
         text = name,
         fontSize = 24.sp,
         fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Bold,
-        modifier = Modifier.fillMaxWidth()
+        fontWeight = FontWeight.Bold
+    )
+}
+
+@Composable
+fun Description(description: String) {
+    Text(
+        text = description,
+        fontSize = 16.sp,
+        fontFamily = FontFamily.SansSerif,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier.wrapContentHeight()
     )
 }
 
@@ -144,7 +165,7 @@ fun Language(language: String) {
 
 @Composable
 fun User(author: String, avatarUrl: String) {
-    Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Avatar(avatarUrl = avatarUrl)
         Space(width = 8)
         Text(text = author, textAlign = TextAlign.Center, fontSize = 16.sp)
@@ -182,7 +203,6 @@ fun Avatar(avatarUrl: String) {
                 .clip(CircleShape),
             color = MaterialTheme.colors.onSurface.copy(0.2f)
         ) {
-            Log.i("Index197511", "IMAGE")
             Image(bitmap = it)
         }
     }
