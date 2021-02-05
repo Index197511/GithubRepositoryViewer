@@ -5,7 +5,6 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import kotlinx.coroutines.flow.Flow
 import me.index197511.githubrepositoryviewer.shared.db.StarredRepository
 import me.index197511.githubrepositoryviewer.shared.db.StarredRepositoryDatabase
-import me.index197511.githubrepositoryviewer.shared.model.Language
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
 class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactory) {
@@ -18,11 +17,11 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
     internal fun insertStarredRepository(repository: Repository) {
         dbQuery.insertStarredRepository(
             repository.author,
+            repository.avatarUrl,
             repository.name,
             repository.url,
             repository.description,
-            repository.language.language,
-            repository.language.color,
+            repository.language,
             repository.stars
         )
     }
@@ -35,9 +34,10 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
 fun StarredRepository.toRepository() =
     Repository(
         author,
+        avatarUrl,
         name,
         url,
         description,
-        Language(language, languageColor),
+        language,
         stars!!
     )
