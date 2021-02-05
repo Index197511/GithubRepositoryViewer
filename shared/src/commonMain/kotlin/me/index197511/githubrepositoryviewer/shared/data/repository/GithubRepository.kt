@@ -15,7 +15,7 @@ class GithubRepository(private val service: IGithubService) : IGithubRepository 
                 service.getTrendRepositories()
             }
                 .onSuccess {
-                    emit(DataState.Success(it.map { e -> e.toModel() }))
+                    emit(DataState.Success(it.items.map { e -> e.toModel() }))
                 }
                 .onFailure {
                     emit(DataState.Error(it.toString()))

@@ -4,9 +4,9 @@ CREATE TABLE StarredRepository (
     avatarUrl TEXT NOT NULL,
     name TEXT NOT NULL,
     url TEXT NOT NULL,
-    description TEXT NOT NULL,
+    description TEXT,
     language TEXT NOT NULL,
-    stars INTEGER as Int
+    stars INTEGER as Int NOT NULL
 );
 
 insertStarredRepository:

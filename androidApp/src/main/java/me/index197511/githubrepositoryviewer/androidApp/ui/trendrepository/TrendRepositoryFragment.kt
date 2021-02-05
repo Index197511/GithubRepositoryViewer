@@ -43,10 +43,11 @@ import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
 import me.index197511.githubrepositoryviewer.shared.data.repository.GithubRepository
 import me.index197511.githubrepositoryviewer.shared.data.resource.remote.GithubService
 import me.index197511.githubrepositoryviewer.shared.model.DataState
-import me.index197511.githubrepositoryviewer.shared.model.Language
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
 class TrendRepositoryFragment : Fragment() {
+    private val viewModel = TrendRepositoryViewModel(GithubRepository(GithubService()))
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -58,17 +59,18 @@ class TrendRepositoryFragment : Fragment() {
         )
         setContent {
             MaterialTheme {
-                TrendRepositoryView()
+                TrendRepositoryView(viewModel)
             }
         }
+        viewModel.getTrendRepository()
     }
 }
 
 @Composable
-fun TrendRepositoryView() {
-    val viewModel: TrendRepositoryViewModel =
-        TrendRepositoryViewModel(GithubRepository(GithubService()))
-    viewModel.getTrendRepository()
+fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
+//    val viewModel: TrendRepositoryViewModel =
+//        TrendRepositoryViewModel(GithubRepository(GithubService()))
+//    viewModel.getTrendRepository()
     val trendRepos = viewModel.trendRepos.collectAsState(initial = DataState.Empty)
     when (trendRepos.value) {
         is DataState.Empty -> {
@@ -94,7 +96,7 @@ fun RepositoryListItem(repository: Repository) {
         .padding(8.dp)
         .zIndex(8f)
     ) {
-        User(author = repository.author, avatarUrl = repository.avatar)
+        User(author = repository.author, avatarUrl = repository.avatarUrl)
         Space(height = 4)
         RepositoryName(name = repository.name)
         Space(height = 8)
@@ -127,16 +129,16 @@ fun Star(star: Int) {
 }
 
 @Composable
-fun Language(language: Language) {
+fun Language(language: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
                 .preferredSize(12.dp)
                 .clip(CircleShape)
-                .background(Color.fromString(language.color))
+                .background(Color.fromString("#FF00FF"))
         )
         Space(width = 4)
-        Text(text = language.language, fontSize = 12.sp, color = Color.Gray)
+        Text(text = language, fontSize = 12.sp, color = Color.Gray)
     }
 }
 
@@ -203,10 +205,10 @@ fun RepositoryListItem_Preview() {
         repository = Repository(
             author = "author",
             name = "Repository",
-            avatar = "https://github.com/Index197511.png",
+            avatarUrl = "https://github.com/Index197511.png",
             url = "https://repository....",
             description = "This Repository is Sample.",
-            language = Language(language = "Kotlin", color = "#0000FF"),
+            language = "Kotlin",
             stars = 2
         )
     )
