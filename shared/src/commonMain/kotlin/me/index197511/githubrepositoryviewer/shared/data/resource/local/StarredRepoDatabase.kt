@@ -33,11 +33,11 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
 
 fun StarredRepository.toRepository() =
     Repository(
-        author,
-        avatarUrl,
-        name,
-        url,
-        description,
-        language,
-        stars!!
+        author = author,
+        avatarUrl = avatarUrl,
+        name = name,
+        url = url,
+        description = description,
+        language = language,
+        stars = stars
     )

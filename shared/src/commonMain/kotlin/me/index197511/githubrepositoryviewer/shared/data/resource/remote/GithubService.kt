@@ -6,7 +6,7 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.request.*
 
 interface IGithubService {
-    suspend fun getTrendRepositories(): List<RepositoryEntity>
+    suspend fun getTrendRepositories(): RepositoriesEntity
 }
 
 class GithubService : IGithubService {
@@ -21,6 +21,6 @@ class GithubService : IGithubService {
         }
     }
 
-    override suspend fun getTrendRepositories(): List<RepositoryEntity> =
+    override suspend fun getTrendRepositories(): RepositoriesEntity =
         httpClient.get(API_URL)
 }
