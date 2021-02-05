@@ -69,13 +69,13 @@ class TrendRepositoryFragment : Fragment() {
 fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
     val trendRepos: DataState<List<Repository>> by viewModel.trendRepos.collectAsState(initial = DataState.Empty)
 
-    when (trendRepos) {
+    when (val res: DataState<List<Repository>> = trendRepos) {
         is DataState.Loading -> {
             LoadingView()
         }
         is DataState.Success -> {
             LazyColumn {
-                items((trendRepos as DataState.Success<List<Repository>>).data) {
+                items(res.data) {
                     RepositoryListItem(repository = it)
                 }
             }
