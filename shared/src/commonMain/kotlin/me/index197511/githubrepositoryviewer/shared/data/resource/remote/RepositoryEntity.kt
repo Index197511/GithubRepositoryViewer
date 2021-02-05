@@ -2,26 +2,39 @@ package me.index197511.githubrepositoryviewer.shared.data.resource.remote
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import me.index197511.githubrepositoryviewer.shared.model.Language
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
 @Serializable
 data class RepositoryEntity(
-    @SerialName("author")
-    val author: String,
+    @SerialName("owner")
+    val owner: OwnerEntity,
     @SerialName("name")
     val name: String,
-    @SerialName("url")
+    @SerialName("html_url")
     val url: String,
     @SerialName("description")
     val description: String,
     @SerialName("language")
     val language: String,
-    @SerialName("languageColor")
-    val languageColor: String,
-    @SerialName("stars")
-    val stars: Int
+    @SerialName("stargazers_count")
+    val stars: Int,
 ) {
     fun toModel() =
-        Repository(author, name, url, description, Language(language, languageColor), stars)
+        Repository(
+            author = owner.author,
+            avatarUrl = owner.avatar,
+            name = name,
+            url = url,
+            description = description,
+            language = language,
+            stars = stars,
+        )
 }
+
+@Serializable
+data class OwnerEntity(
+    @SerialName("login")
+    val author: String,
+    @SerialName("avatar_url")
+    val avatar: String,
+)

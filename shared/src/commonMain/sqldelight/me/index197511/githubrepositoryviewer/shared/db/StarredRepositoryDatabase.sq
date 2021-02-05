@@ -1,16 +1,16 @@
 CREATE TABLE StarredRepository (
     id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     author TEXT NOT NULL,
+    avatarUrl TEXT NOT NULL,
     name TEXT NOT NULL,
     url TEXT NOT NULL,
     description TEXT NOT NULL,
     language TEXT NOT NULL,
-    languageColor TEXT NOT NULL,
     stars INTEGER as Int
 );
 
 insertStarredRepository:
-    INSERT INTO StarredRepository(author, name, url, description, language, languageColor, stars)
+    INSERT INTO StarredRepository(author, avatarUrl, name, url, description, language, stars)
     VALUES(?, ?, ?, ?, ?, ?, ?);
 
 removeStarredRepository:
