@@ -37,16 +37,17 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
-import me.index197511.githubrepositoryviewer.shared.data.repository.GithubRepository
-import me.index197511.githubrepositoryviewer.shared.data.resource.remote.GithubService
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
+import me.index197511.githubrepositoryviewer.shared.presentation.RepositoryListViewModel
 
 class TrendRepositoryFragment : Fragment() {
-    private val viewModel = TrendRepositoryViewModel(GithubRepository(GithubService()))
+    private val viewModel = RepositoryListViewModel()
 
+    @ExperimentalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -61,13 +62,14 @@ class TrendRepositoryFragment : Fragment() {
                 TrendRepositoryView(viewModel)
             }
         }
-        viewModel.getTrendRepository()
+        viewModel.getRepositories()
     }
 }
 
+@ExperimentalCoroutinesApi
 @Composable
-fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
-    val trendRepos: DataState<List<Repository>> by viewModel.trendRepos.collectAsState(initial = DataState.Empty)
+fun TrendRepositoryView(viewModel: RepositoryListViewModel) {
+    val trendRepos: DataState<List<Repository>> by viewModel.repositories.collectAsState(initial = DataState.Empty)
 
     when (val res: DataState<List<Repository>> = trendRepos) {
         is DataState.Loading -> {
@@ -81,7 +83,8 @@ fun TrendRepositoryView(viewModel: TrendRepositoryViewModel) {
             }
         }
         is DataState.Error -> {
-            ErrorView(onClick = { viewModel.getTrendRepository() })
+            Log.i("Index197511", res.exception)
+            ErrorView(onClick = { viewModel.getRepositories() })
         }
         else -> {
         }
