@@ -1,4 +1,4 @@
-package me.index197511.githubrepositoryviewer.androidApp.ui.trendrepository
+package me.index197511.githubrepositoryviewer.androidApp.ui.repositorylist
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -27,7 +27,7 @@ class RepositoryListViewModel: ViewModel() {
     @ExperimentalCoroutinesApi
     fun getRepositories() {
         viewModelScope.launch {
-            repository.getTrendRepositories().collect {
+            repository.getRepositories().collect {
                 _repositories.value = it
             }
         }

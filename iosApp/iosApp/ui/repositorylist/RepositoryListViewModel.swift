@@ -20,7 +20,7 @@ class RepositoryListViewModel : ObservableObject {
     }
     
     func getRepositories() {
-        repository.getTrendRepositories().collect(collector: Collector<DataState>{res in
+        repository.getRepositories().collect(collector: Collector<DataState>{res in
             print(res)
             self.state = res
         }, completionHandler: {(unit, err) in })
