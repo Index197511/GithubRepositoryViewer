@@ -18,6 +18,7 @@
 		7555FFB3242A642300829871 /* shared.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7555FFB1242A642300829871 /* shared.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		84452B3D25D3808B00B51328 /* RepositoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84452B3C25D3808B00B51328 /* RepositoryListView.swift */; };
 		84B5F37B25D7783000E1D2CB /* RepositoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B5F37A25D7783000E1D2CB /* RepositoryListViewModel.swift */; };
+		84B5F38A25DCFCBA00E1D2CB /* FlowCollector.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84B5F38925DCFCBA00E1D2CB /* FlowCollector.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		7555FFB1242A642300829871 /* shared.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = shared.framework; path = "../shared/build/xcode-frameworks/shared.framework"; sourceTree = "<group>"; };
 		84452B3C25D3808B00B51328 /* RepositoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListView.swift; sourceTree = "<group>"; };
 		84B5F37A25D7783000E1D2CB /* RepositoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RepositoryListViewModel.swift; sourceTree = "<group>"; };
+		84B5F38925DCFCBA00E1D2CB /* FlowCollector.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowCollector.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,14 +122,14 @@
 		7555FF7D242A565900829871 /* iosApp */ = {
 			isa = PBXGroup;
 			children = (
+				84B5F38F25DCFF8D00E1D2CB /* ui */,
+				84B5F38825DCFC9600E1D2CB /* util */,
 				7555FF7E242A565900829871 /* AppDelegate.swift */,
 				7555FF80242A565900829871 /* SceneDelegate.swift */,
 				7555FF84242A565B00829871 /* Assets.xcassets */,
 				7555FF89242A565B00829871 /* LaunchScreen.storyboard */,
 				7555FF8C242A565B00829871 /* Info.plist */,
 				7555FF86242A565B00829871 /* Preview Content */,
-				84452B3C25D3808B00B51328 /* RepositoryListView.swift */,
-				84B5F37A25D7783000E1D2CB /* RepositoryListViewModel.swift */,
 			);
 			path = iosApp;
 			sourceTree = "<group>";
@@ -164,6 +166,31 @@
 				7555FFB1242A642300829871 /* shared.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		84B5F38825DCFC9600E1D2CB /* util */ = {
+			isa = PBXGroup;
+			children = (
+				84B5F38925DCFCBA00E1D2CB /* FlowCollector.swift */,
+			);
+			path = util;
+			sourceTree = "<group>";
+		};
+		84B5F38F25DCFF8D00E1D2CB /* ui */ = {
+			isa = PBXGroup;
+			children = (
+				84B5F39025DCFF9400E1D2CB /* repositorylist */,
+			);
+			path = ui;
+			sourceTree = "<group>";
+		};
+		84B5F39025DCFF9400E1D2CB /* repositorylist */ = {
+			isa = PBXGroup;
+			children = (
+				84452B3C25D3808B00B51328 /* RepositoryListView.swift */,
+				84B5F37A25D7783000E1D2CB /* RepositoryListViewModel.swift */,
+			);
+			path = repositorylist;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -322,6 +349,7 @@
 				7555FF7F242A565900829871 /* AppDelegate.swift in Sources */,
 				7555FF81242A565900829871 /* SceneDelegate.swift in Sources */,
 				84452B3D25D3808B00B51328 /* RepositoryListView.swift in Sources */,
+				84B5F38A25DCFCBA00E1D2CB /* FlowCollector.swift in Sources */,
 				84B5F37B25D7783000E1D2CB /* RepositoryListViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

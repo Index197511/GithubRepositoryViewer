@@ -2,7 +2,7 @@
 //  RepositoryListVIew.swift
 //  iosApp
 //
-//  Created by admin on 2021/02/10.
+//  Created by Index197511 on 2021/02/10.
 //  Copyright © 2021 orgName. All rights reserved.
 //
 
@@ -89,7 +89,7 @@ struct User: View {
         self.author = author
         self.avatarUrl = avatarUrl
         self.avatarLoader = avatarLoader
-        self.avatarLoader.loadImage(url: avatarUrl)
+        self.avatarLoader.load(url: avatarUrl)
     }
     
     var body: some View {
