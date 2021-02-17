@@ -16,11 +16,11 @@ class RepositoryListViewModel : ViewModel() {
     private val repository: IGithubRepository = GithubRepository(GithubService())
 
     @ExperimentalCoroutinesApi
-    private val _repositories: MutableStateFlow<DataState<List<Repository>>> =
+    private val _repositories: MutableStateFlow<DataState> =
         MutableStateFlow(DataState.Empty)
 
     @ExperimentalCoroutinesApi
-    val repositories: StateFlow<DataState<List<Repository>>>
+    val repositories: StateFlow<DataState>
         get() = _repositories
 
     @ExperimentalCoroutinesApi

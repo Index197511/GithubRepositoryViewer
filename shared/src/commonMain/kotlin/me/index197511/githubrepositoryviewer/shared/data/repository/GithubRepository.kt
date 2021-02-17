@@ -9,7 +9,7 @@ import me.index197511.githubrepositoryviewer.shared.util.CommonFlow
 import me.index197511.githubrepositoryviewer.shared.util.wrap
 
 class GithubRepository(private val service: IGithubService) : IGithubRepository {
-    override fun getTrendRepositories(): CommonFlow<DataState<List<Repository>>> =
+    override fun getTrendRepositories(): CommonFlow<DataState> =
         flow {
             emit(DataState.Loading)
             kotlin.runCatching {

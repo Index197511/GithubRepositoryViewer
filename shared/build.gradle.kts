@@ -46,7 +46,7 @@ kotlin {
         iosX64("ios")
     }
     sourceSets {
-        val ktorVersion = "1.4.0"
+        val ktorVersion = "1.5.1"
         val sqlDelightVersion: String by project
         val commonMain by getting {
             dependencies {

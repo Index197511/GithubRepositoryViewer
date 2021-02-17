@@ -69,9 +69,9 @@ class TrendRepositoryFragment : Fragment() {
 @ExperimentalCoroutinesApi
 @Composable
 fun TrendRepositoryView(viewModel: RepositoryListViewModel) {
-    val trendRepos: DataState<List<Repository>> by viewModel.repositories.collectAsState(initial = DataState.Empty)
+    val trendRepos: DataState by viewModel.repositories.collectAsState(initial = DataState.Empty)
 
-    when (val res: DataState<List<Repository>> = trendRepos) {
+    when (val res: DataState = trendRepos) {
         is DataState.Loading -> {
             LoadingView()
         }

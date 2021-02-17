@@ -7,6 +7,6 @@ import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 
 @ExperimentalCoroutinesApi
-fun RepositoryListViewModel.observe(block: (DataState<List<Repository>>) -> Unit) {
+fun RepositoryListViewModel.observe(block: (DataState) -> Unit) {
     this.repositories.onEach { block(it) }.launchIn(this.viewModelScope)
 }

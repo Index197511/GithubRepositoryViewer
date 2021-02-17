@@ -1,9 +1,9 @@
 package me.index197511.githubrepositoryviewer.shared.util
 
 import io.ktor.utils.io.core.*
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 
@@ -21,6 +21,15 @@ class CommonFlow<T>(private val origin: Flow<T>) : Flow<T> by origin {
             override fun close() {
                 job.cancel()
             }
+        }
+    }
+}
+
+@InternalCoroutinesApi
+suspend fun <T> CommonFlow<T>.collectTest(block: (Any?) -> Unit) {
+    withContext(Dispatchers.Default) {
+        this@collectTest.collect {
+            block(it)
         }
     }
 }
