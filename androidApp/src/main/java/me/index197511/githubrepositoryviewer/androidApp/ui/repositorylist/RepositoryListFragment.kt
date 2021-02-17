@@ -1,4 +1,4 @@
-package me.index197511.githubrepositoryviewer.androidApp.ui.trendrepository
+package me.index197511.githubrepositoryviewer.androidApp.ui.repositorylist
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -42,9 +42,8 @@ import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
-import me.index197511.githubrepositoryviewer.shared.presentation.RepositoryListViewModel
 
-class TrendRepositoryFragment : Fragment() {
+class RepositoryListFragment : Fragment() {
     private val viewModel = RepositoryListViewModel()
 
     @ExperimentalCoroutinesApi
@@ -59,7 +58,7 @@ class TrendRepositoryFragment : Fragment() {
         )
         setContent {
             MaterialTheme {
-                TrendRepositoryView(viewModel)
+                RepositoryListView(viewModel)
             }
         }
         viewModel.getRepositories()
@@ -68,10 +67,10 @@ class TrendRepositoryFragment : Fragment() {
 
 @ExperimentalCoroutinesApi
 @Composable
-fun TrendRepositoryView(viewModel: RepositoryListViewModel) {
-    val trendRepos: DataState<List<Repository>> by viewModel.repositories.collectAsState(initial = DataState.Empty)
+fun RepositoryListView(viewModel: RepositoryListViewModel) {
+    val repositories: DataState by viewModel.repositories.collectAsState(initial = DataState.Empty)
 
-    when (val res: DataState<List<Repository>> = trendRepos) {
+    when (val res: DataState = repositories) {
         is DataState.Loading -> {
             LoadingView()
         }

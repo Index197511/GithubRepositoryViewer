@@ -2,10 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/trendRepositoryFragment">
+    app:startDestination="@id/repositoryListFragment">
 
     <fragment
-        android:id="@+id/trendRepositoryFragment"
-        android:name="me.index197511.githubrepositoryviewer.androidApp.ui.trendrepository.TrendRepositoryFragment"
-        android:label="TrendRepositoryFragment" />
+        android:id="@+id/repositoryListFragment"
+        android:name="me.index197511.githubrepositoryviewer.androidApp.ui.repositorylist.RepositoryListFragment"
+        android:label="RepositoryListsFragment" />
 </navigation>
