@@ -42,7 +42,6 @@ import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
-import me.index197511.githubrepositoryviewer.shared.presentation.RepositoryListViewModel
 
 class TrendRepositoryFragment : Fragment() {
     private val viewModel = RepositoryListViewModel()
