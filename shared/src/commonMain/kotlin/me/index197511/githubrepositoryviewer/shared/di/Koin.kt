@@ -10,7 +10,7 @@ import org.koin.dsl.module
 
 val commonModule = module {
     single<IGithubService> { GithubService() }
-    single<IGithubRepository> { GithubRepository(get()) }
+    single<IGithubRepository> { GithubRepository() }
 }
 
 fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {

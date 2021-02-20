@@ -5,9 +5,11 @@ import kotlinx.coroutines.flow.flow
 import me.index197511.githubrepositoryviewer.shared.data.resource.remote.IGithubService
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.repository.IGithubRepository
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
-class GithubRepository(private val service: IGithubService) : IGithubRepository {
-
+class GithubRepository : IGithubRepository, KoinComponent {
+    private val service by inject<IGithubService>()
     override fun getRepositories(): Flow<DataState> =
         flow {
             emit(DataState.Loading)
