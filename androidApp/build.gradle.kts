@@ -33,6 +33,11 @@ dependencies {
     // Glide
     val glideVersion = "4.11.0"
     implementation("com.github.bumptech.glide:glide:$glideVersion")
+
+    val koinVersion = "3.0.0-alpha-4"
+    implementation("org.koin:koin-core:$koinVersion")
+    implementation("org.koin:koin-android:$koinVersion")
+    implementation("org.koin:koin-android-viewmodel:$koinVersion")
 }
 
 android {

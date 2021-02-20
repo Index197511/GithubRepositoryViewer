@@ -42,9 +42,10 @@ import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
+import org.koin.android.viewmodel.ext.android.viewModel
 
 class RepositoryListFragment : Fragment() {
-    private val viewModel = RepositoryListViewModel()
+    private val viewModel by viewModel<RepositoryListViewModel>()
 
     @ExperimentalCoroutinesApi
     override fun onCreateView(

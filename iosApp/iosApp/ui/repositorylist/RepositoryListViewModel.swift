@@ -14,9 +14,9 @@ class RepositoryListViewModel : ObservableObject {
     let repository: IGithubRepository
     @Published var state: DataState
 
-    init() {
-        repository = GithubRepository(service: GithubService())
-        state = DataState.Empty()
+    init(repository: IGithubRepository) {
+        self.repository = repository
+        self.state = DataState.Empty()
     }
     
     func getRepositories() {
