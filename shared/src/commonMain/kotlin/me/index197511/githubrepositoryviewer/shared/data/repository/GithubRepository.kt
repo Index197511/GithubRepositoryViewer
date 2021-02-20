@@ -7,6 +7,7 @@ import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.repository.IGithubRepository
 
 class GithubRepository(private val service: IGithubService) : IGithubRepository {
+
     override fun getRepositories(): Flow<DataState> =
         flow {
             emit(DataState.Loading)
