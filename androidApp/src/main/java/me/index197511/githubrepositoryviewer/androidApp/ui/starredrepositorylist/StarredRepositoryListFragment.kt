@@ -1,4 +1,4 @@
-package me.index197511.githubrepositoryviewer.androidApp.ui.repositorylist
+package me.index197511.githubrepositoryviewer.androidApp.ui.starredrepositorylist
 
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -27,7 +27,6 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -37,17 +36,17 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class RepositoryListFragment : Fragment() {
-    private val viewModel by viewModel<RepositoryListViewModel>()
+class StarredRepositoryListFragment : Fragment() {
+    private val viewModel by viewModel<StarredRepositoryListViewModel>()
 
-    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,36 +58,31 @@ class RepositoryListFragment : Fragment() {
         )
         setContent {
             MaterialTheme {
-                RepositoryListView(viewModel)
+                StarredRepositoryListView(viewModel = viewModel)
             }
         }
-        viewModel.getRepositories()
+        viewModel.getStarredRepositories()
     }
 }
 
-@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Composable
-fun RepositoryListView(viewModel: RepositoryListViewModel) {
-    val repositories: DataState by viewModel.repositories.collectAsState(initial = DataState.Empty)
-
-    when (val res: DataState = repositories) {
+fun StarredRepositoryListView(viewModel: StarredRepositoryListViewModel) {
+    val starredRepositories: DataState by viewModel.starredRepositories.collectAsState(initial = DataState.Empty)
+    when (val res: DataState = starredRepositories) {
         is DataState.Loading -> {
             LoadingView()
         }
         is DataState.Success -> {
             LazyColumn {
                 items(res.data) {
-                    RepositoryListItem(repository = it) { repository ->
-                        viewModel.starRepository(
-                            repository
-                        )
-                    }
+                    RepositoryListItem(repository = it)
                 }
             }
         }
         is DataState.Error -> {
             Log.i("Index197511", res.exception)
-            ErrorView(onClick = { viewModel.getRepositories() })
+            ErrorView(onClick = { viewModel.getStarredRepositories() })
         }
         else -> {
         }
@@ -126,10 +120,10 @@ fun LoadingView() {
 }
 
 @Composable
-fun RepositoryListItem(repository: Repository, onClick: (repository: Repository) -> Unit) {
+fun RepositoryListItem(repository: Repository) {
     Column(modifier = Modifier
         .fillMaxWidth()
-        .clickable { onClick(repository) }
+        .clickable { Log.i("Index197511", "CLICKED") }
         .wrapContentHeight()
         .padding(16.dp)
         .zIndex(8f)
@@ -251,19 +245,3 @@ private fun Space(width: Int = 0, height: Int = 0) {
             .width(width.dp)
     )
 }
-
-//@Preview
-//@Composable
-//fun RepositoryListItem_Preview() {
-//    RepositoryListItem(
-//        repository = Repository(
-//            author = "author",
-//            name = "Repository",
-//            avatarUrl = "https://github.com/Index197511.png",
-//            url = "https://repository....",
-//            description = "This Repository is Sample.",
-//            language = "Kotlin",
-//            stars = 2
-//        )
-//    )
-//}
