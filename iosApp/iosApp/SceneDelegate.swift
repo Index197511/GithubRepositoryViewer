@@ -13,14 +13,20 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
 
         // Create the SwiftUI view that provides the window contents.
-        let repository = GithubRepository()
-        let viewModel = RepositoryListViewModel(repository: repository)
-        let repositoryListView = RepositoryListView(viewModel: viewModel)
+
+        let githubRepository = GithubRepository()
+        let starredRepoRepository = StarredRepoRepository()
+        
+        let starredRepoRepositoryViewModel = StarredRepoRepositoryListViewModel(repository: starredRepoRepository)
+        let repositoryListViewModel =
+            RepositoryListViewModel(githubRepository: githubRepository, starredRepoRepository: starredRepoRepository)
+        
+        let contentView = ContentView(starredRepoRepositoryListViewModel: starredRepoRepositoryViewModel, repositoryListViewModel: repositoryListViewModel)
 
         // Use a UIHostingController as window root view controller.
         if let windowScene = scene as? UIWindowScene {
             let window = UIWindow(windowScene: windowScene)
-            window.rootViewController = UIHostingController(rootView: repositoryListView)
+            window.rootViewController = UIHostingController(rootView: contentView)
             self.window = window
             window.makeKeyAndVisible()
         }

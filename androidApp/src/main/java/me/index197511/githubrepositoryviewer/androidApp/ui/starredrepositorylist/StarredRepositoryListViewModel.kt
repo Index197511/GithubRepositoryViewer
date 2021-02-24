@@ -14,7 +14,7 @@ import me.index197511.githubrepositoryviewer.shared.model.repository.IStarredRep
 class StarredRepositoryListViewModel(private val starredRepoRepository: IStarredRepoRepository) :
     ViewModel() {
     private val _starredRepositories: MutableStateFlow<DataState> =
-        MutableStateFlow(DataState.Empty)
+        MutableStateFlow(DataState.Init)
     val starredRepositories: StateFlow<DataState>
         get() = _starredRepositories
 

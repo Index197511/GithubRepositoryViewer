@@ -27,6 +27,6 @@ fun initKoin(appDeclaration: KoinAppDeclaration = {}) = startKoin {
 fun initKoin(databaseDriverFactory: StarredRepoDatabaseDriverFactory) = initKoin {
     modules(module {
         single { StarredRepoDatabase(databaseDriverFactory) }
-        single<IStarredRepoRepository> { StarredRepoRepository(get()) }
+        single<IStarredRepoRepository> { StarredRepoRepository() }
     })
 }

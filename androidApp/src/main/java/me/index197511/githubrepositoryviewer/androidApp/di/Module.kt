@@ -11,7 +11,7 @@ import org.koin.dsl.module
 
 val appModule = module {
     single { StarredRepoDatabase(StarredRepoDatabaseDriverFactory(get())) }
-    single<IStarredRepoRepository> { StarredRepoRepository(get()) }
+    single<IStarredRepoRepository> { StarredRepoRepository() }
     viewModel { RepositoryListViewModel(get(), get()) }
     viewModel { StarredRepositoryListViewModel(get()) }
 }

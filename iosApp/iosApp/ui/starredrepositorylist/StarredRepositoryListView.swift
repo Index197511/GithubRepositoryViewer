@@ -1,8 +1,8 @@
 //
-//  RepositoryListVIew.swift
+//  StarredRepositoryListView.swift
 //  iosApp
 //
-//  Created by Index197511 on 2021/02/10.
+//  Created by Index197511 on 2021/02/23.
 //  Copyright © 2021 orgName. All rights reserved.
 //
 
@@ -10,10 +10,10 @@ import Foundation
 import SwiftUI
 import shared
 
-struct RepositoryListView: View {
-    @ObservedObject var viewModel: RepositoryListViewModel
+struct StarredRepositoryListView: View {
+    @ObservedObject var viewModel: StarredRepoRepositoryListViewModel
     
-    init(viewModel: RepositoryListViewModel) {
+    init(viewModel: StarredRepoRepositoryListViewModel) {
         self.viewModel = viewModel
     }
     
@@ -22,20 +22,18 @@ struct RepositoryListView: View {
         switch self.viewModel.state {
         case is DataState.Init:
             InitView().onAppear{
-                viewModel.getRepositories()
+                viewModel.getStarredRepositories()
             }
         case is DataState.Success:
             List {
                 ForEach((self.viewModel.state as! DataState.Success).data, id: \.self) { repository in
-                    RepositoryListItem(repository: repository) { repository in
-                        viewModel.starRepository(repository: repository)
-                    }
+                    RepositoryListItem(repository: repository, onClick: {repo in print("clicked \(repo.name)")})
                 }
             }
         case is DataState.Loading:
             LoadingView()
         case is DataState.Error:
-            ErrorView(onClick: {self.viewModel.getRepositories()})
+            ErrorView(onClick: {self.viewModel.getStarredRepositories()})
         default:
             DefaultView()
         }

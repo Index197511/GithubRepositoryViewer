@@ -20,7 +20,7 @@ class RepositoryListViewModel(
 
     @ExperimentalCoroutinesApi
     private val _repositories: MutableStateFlow<DataState> =
-        MutableStateFlow(DataState.Empty)
+        MutableStateFlow(DataState.Init)
 
     @ExperimentalCoroutinesApi
     val repositories: StateFlow<DataState>

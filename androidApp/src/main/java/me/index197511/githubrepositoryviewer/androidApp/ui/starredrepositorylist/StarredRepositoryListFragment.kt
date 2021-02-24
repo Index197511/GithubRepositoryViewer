@@ -68,7 +68,7 @@ class StarredRepositoryListFragment : Fragment() {
 @InternalCoroutinesApi
 @Composable
 fun StarredRepositoryListView(viewModel: StarredRepositoryListViewModel) {
-    val starredRepositories: DataState by viewModel.starredRepositories.collectAsState(initial = DataState.Empty)
+    val starredRepositories: DataState by viewModel.starredRepositories.collectAsState(initial = DataState.Init)
     when (val res: DataState = starredRepositories) {
         is DataState.Loading -> {
             LoadingView()

@@ -69,7 +69,7 @@ class RepositoryListFragment : Fragment() {
 @ExperimentalCoroutinesApi
 @Composable
 fun RepositoryListView(viewModel: RepositoryListViewModel) {
-    val repositories: DataState by viewModel.repositories.collectAsState(initial = DataState.Empty)
+    val repositories: DataState by viewModel.repositories.collectAsState(initial = DataState.Init)
 
     when (val res: DataState = repositories) {
         is DataState.Loading -> {
