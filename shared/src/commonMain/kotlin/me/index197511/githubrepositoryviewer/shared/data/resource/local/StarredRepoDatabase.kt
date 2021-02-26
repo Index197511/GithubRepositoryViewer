@@ -14,15 +14,16 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
     internal fun getAllStarredRepository(): Flow<List<StarredRepository>> =
         dbQuery.loadAllStarredRepository().asFlow().mapToList()
 
-    internal suspend fun insertStarredRepository(repository: Repository) {
-        dbQuery.insertStarredRepository(
-            repository.author,
-            repository.avatarUrl,
-            repository.name,
-            repository.url,
-            repository.description,
-            repository.language,
-            repository.stars
+    internal fun insertStarredRepository(repository: Repository) {
+        dbQuery.upsertStarredRepository(
+            id = repository.id,
+            author = repository.author,
+            avatarUrl = repository.avatarUrl,
+            name = repository.name,
+            url = repository.url,
+            description = repository.description,
+            language = repository.language,
+            stars = repository.stars
         )
     }
 
@@ -33,6 +34,7 @@ class StarredRepoDatabase(databaseDriverFactory: StarredRepoDatabaseDriverFactor
 
 fun StarredRepository.toRepository() =
     Repository(
+        id = id,
         author = author,
         avatarUrl = avatarUrl,
         name = name,
