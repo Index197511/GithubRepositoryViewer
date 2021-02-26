@@ -40,6 +40,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ext.fromString
+import me.index197511.githubrepositoryviewer.androidApp.ui.common.ErrorView
+import me.index197511.githubrepositoryviewer.androidApp.ui.common.LoadingView
+import me.index197511.githubrepositoryviewer.androidApp.ui.common.repository.*
+import me.index197511.githubrepositoryviewer.androidApp.ui.util.Space
 import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -95,35 +99,6 @@ fun RepositoryListView(viewModel: RepositoryListViewModel) {
     }
 }
 
-@Composable
-fun ErrorView(onClick: () -> Unit) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-    ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Text(text = "Oops, an error occurred", textAlign = TextAlign.Center, color = Color.Gray)
-            Space(height = 4)
-            Text(text = "please try again", textAlign = TextAlign.Center, color = Color.Gray)
-            Space(height = 8)
-            Button(onClick = onClick) {
-                Text(text = "RETRY")
-            }
-        }
-    }
-}
-
-@Composable
-fun LoadingView() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .wrapContentSize(Alignment.Center)
-    ) {
-        CircularProgressIndicator()
-    }
-}
 
 @Composable
 fun RepositoryListItem(repository: Repository, onClick: (repository: Repository) -> Unit) {
@@ -151,119 +126,3 @@ fun RepositoryListItem(repository: Repository, onClick: (repository: Repository)
         }
     }
 }
-
-@Composable
-fun RepositoryName(name: String) {
-    Text(
-        text = name,
-        fontSize = 24.sp,
-        fontFamily = FontFamily.SansSerif,
-        fontWeight = FontWeight.Bold
-    )
-}
-
-@Composable
-fun Description(description: String) {
-    Text(
-        text = description,
-        fontSize = 16.sp,
-        fontFamily = FontFamily.SansSerif,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
-        modifier = Modifier.wrapContentHeight()
-    )
-}
-
-@Composable
-fun Star(star: Int) {
-    Text(
-        text = "Star: $star",
-        fontSize = 12.sp,
-        color = Color.Gray
-    )
-}
-
-@Composable
-fun Language(language: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Box(
-            modifier = Modifier
-                .preferredSize(12.dp)
-                .clip(CircleShape)
-                .background(Color.fromString("#FF00FF"))
-        )
-        Space(width = 4)
-        Text(text = language, fontSize = 12.sp, color = Color.Gray)
-    }
-}
-
-@Composable
-fun User(author: String, avatarUrl: String) {
-    Row(verticalAlignment = Alignment.CenterVertically) {
-        Avatar(avatarUrl = avatarUrl)
-        Space(width = 8)
-        Text(text = author, textAlign = TextAlign.Center, fontSize = 16.sp)
-    }
-}
-
-@Composable
-fun Avatar(avatarUrl: String) {
-    val image = remember { mutableStateOf<ImageBitmap?>(null) }
-    val context = AmbientContext.current
-
-    onCommit(avatarUrl) {
-        val glide = Glide.with(context)
-        val job = CoroutineScope(Dispatchers.Main).launch {
-            glide.asBitmap().load(avatarUrl).into(object : CustomTarget<Bitmap>() {
-                override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                    image.value = resource.asImageBitmap()
-                }
-
-                override fun onLoadCleared(placeholder: Drawable?) {
-                    image.value = null
-                }
-            })
-        }
-        onDispose {
-            image.value = null
-            job.cancel()
-        }
-    }
-
-    image.value?.let {
-        Surface(
-            modifier = Modifier
-                .preferredSize(30.dp)
-                .clip(CircleShape),
-            color = MaterialTheme.colors.onSurface.copy(0.2f)
-        ) {
-            Image(bitmap = it)
-        }
-    }
-
-}
-
-@Composable
-private fun Space(width: Int = 0, height: Int = 0) {
-    Spacer(
-        modifier = Modifier
-            .height(height.dp)
-            .width(width.dp)
-    )
-}
-
-//@Preview
-//@Composable
-//fun RepositoryListItem_Preview() {
-//    RepositoryListItem(
-//        repository = Repository(
-//            author = "author",
-//            name = "Repository",
-//            avatarUrl = "https://github.com/Index197511.png",
-//            url = "https://repository....",
-//            description = "This Repository is Sample.",
-//            language = "Kotlin",
-//            stars = 2
-//        )
-//    )
-//}
