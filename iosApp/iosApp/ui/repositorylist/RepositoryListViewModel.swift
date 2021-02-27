@@ -34,23 +34,3 @@ class RepositoryListViewModel : ObservableObject {
         starredRepoRepository.insertStarredRepo(repository: repository, completionHandler: {(unit, err) in})
     }
 }
-
-
-class AvatarLoader: ObservableObject {
-    @Published var userAvatar = UIImage()
-    
-    func load(url: String) {
-        let session = URLSession(configuration: .default)
-        let task = session.dataTask(with: URL(string: url)!) { data, _, _ in
-            guard let image = data,
-                  let imageFromRemote = UIImage(data: image)
-            else {return}
-            
-            DispatchQueue.main.async {
-                self.userAvatar = imageFromRemote
-            }
-            session.invalidateAndCancel()
-        }
-        task.resume()
-    }
-}
