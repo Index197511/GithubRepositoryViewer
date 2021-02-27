@@ -117,5 +117,6 @@ tasks.getByName("build").dependsOn(packForXcode)
 sqldelight {
     database("StarredRepositoryDatabase") {
         packageName = "me.index197511.githubrepositoryviewer.shared.db"
+        dialect = "sqlite:3.25"
     }
 }

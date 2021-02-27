@@ -1,5 +1,5 @@
 CREATE TABLE StarredRepository (
-    id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    id INTEGER NOT NULL PRIMARY KEY,
     author TEXT NOT NULL,
     avatarUrl TEXT NOT NULL,
     name TEXT NOT NULL,
@@ -9,9 +9,18 @@ CREATE TABLE StarredRepository (
     stars INTEGER as Int NOT NULL
 );
 
-insertStarredRepository:
-    INSERT INTO StarredRepository(author, avatarUrl, name, url, description, language, stars)
-    VALUES(?, ?, ?, ?, ?, ?, ?);
+upsertStarredRepository:
+    INSERT INTO StarredRepository(id, author, avatarUrl, name, url, description, language, stars)
+    VALUES(:id, :author, :avatarUrl, :name, :url, :description, :language, :stars) ON CONFLICT(id) DO
+    UPDATE SET
+    id=excluded.id,
+    author=excluded.author,
+    avatarUrl=excluded.avatarUrl,
+    name=excluded.name,
+    url=excluded.url,
+    description=excluded.description,
+    language=excluded.language,
+    stars=excluded.stars;
 
 removeStarredRepository:
     DELETE FROM StarredRepository

@@ -1,4 +1,4 @@
-package me.index197511.githubrepositoryviewer.androidApp.ui.repositorylist
+package me.index197511.githubrepositoryviewer.androidApp.ui.starredrepositorylist
 
 import android.os.Bundle
 import android.util.Log
@@ -21,7 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.fragment.app.Fragment
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.InternalCoroutinesApi
 import me.index197511.githubrepositoryviewer.androidApp.ui.common.ErrorView
 import me.index197511.githubrepositoryviewer.androidApp.ui.common.LoadingView
 import me.index197511.githubrepositoryviewer.androidApp.ui.common.repository.*
@@ -30,10 +30,10 @@ import me.index197511.githubrepositoryviewer.shared.model.DataState
 import me.index197511.githubrepositoryviewer.shared.model.Repository
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class RepositoryListFragment : Fragment() {
-    private val viewModel by viewModel<RepositoryListViewModel>()
+class StarredRepositoryListFragment : Fragment() {
+    private val viewModel by viewModel<StarredRepositoryListViewModel>()
 
-    @ExperimentalCoroutinesApi
+    @InternalCoroutinesApi
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -45,28 +45,30 @@ class RepositoryListFragment : Fragment() {
         )
         setContent {
             MaterialTheme {
-                RepositoryListView(viewModel)
+                StarredRepositoryListView(viewModel = viewModel)
             }
         }
-        viewModel.getRepositories()
+        viewModel.getStarredRepositories()
     }
 }
 
-@ExperimentalCoroutinesApi
+@InternalCoroutinesApi
 @Composable
-fun RepositoryListView(viewModel: RepositoryListViewModel) {
-    val repositories: DataState by viewModel.repositories.collectAsState(initial = DataState.Init)
+fun StarredRepositoryListView(viewModel: StarredRepositoryListViewModel) {
+    val starredRepositories: DataState by viewModel.starredRepositories.collectAsState(initial = DataState.Init)
 
-    when (val res: DataState = repositories) {
+    when (val res: DataState = starredRepositories) {
         is DataState.Loading -> {
             LoadingView()
         }
         is DataState.Success -> {
-            RepositoryList(repositories = res.data, onClick = { viewModel.starRepository(it) })
+            StarredRepositoryList(
+                repositories = res.data,
+                onClick = { viewModel.unstarRepository(it) })
         }
         is DataState.Error -> {
             Log.i("Index197511", res.exception)
-            ErrorView(onClick = { viewModel.getRepositories() })
+            ErrorView(onClick = { viewModel.getStarredRepositories() })
         }
         else -> {
         }
@@ -74,26 +76,29 @@ fun RepositoryListView(viewModel: RepositoryListViewModel) {
 }
 
 @Composable
-fun RepositoryList(repositories: List<Repository>, onClick: (repository: Repository) -> Unit) {
+fun StarredRepositoryList(
+    repositories: List<Repository>,
+    onClick: (repository: Repository) -> Unit
+) {
     val context = LocalContext.current
 
     LazyColumn {
-        items(repositories) { repository ->
-            Repository(
-                repository = repository,
-                onClick = {
-                    onClick(repository)
-                    Toast.makeText(context, "starred ${repository.name}", Toast.LENGTH_SHORT)
-                        .show()
-                }
-            )
+        items(repositories) {
+            StarredRepository(repository = it) { repository ->
+                onClick(repository)
+                Toast.makeText(
+                    context,
+                    "unstarred ${repository.name}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
         }
     }
 }
 
-
 @Composable
-fun Repository(repository: Repository, onClick: (repository: Repository) -> Unit) {
+fun StarredRepository(repository: Repository, onClick: (repository: Repository) -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
         .clickable { onClick(repository) }

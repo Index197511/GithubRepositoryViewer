@@ -1,6 +1,7 @@
 package me.index197511.githubrepositoryviewer.shared.model
 
 data class Repository(
+    val id: Long,
     val author: String,
     val avatarUrl: String,
     val name: String,

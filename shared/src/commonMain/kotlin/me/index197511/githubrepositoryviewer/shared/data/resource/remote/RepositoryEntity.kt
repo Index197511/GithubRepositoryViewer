@@ -12,6 +12,8 @@ data class RepositoriesEntity(
 
 @Serializable
 data class RepositoryEntity(
+    @SerialName("id")
+    val id: Long,
     @SerialName("owner")
     val owner: OwnerEntity,
     @SerialName("name")
@@ -27,6 +29,7 @@ data class RepositoryEntity(
 ) {
     fun toModel() =
         Repository(
+            id = id,
             author = owner.author,
             avatarUrl = owner.avatar,
             name = name,

@@ -25,7 +25,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
 
     // Jetpack Compose
-    val composeVersion = "1.0.0-alpha10"
+    val composeVersion = "1.0.0-beta01"
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.material:material:$composeVersion")
     implementation("androidx.compose.ui:ui-tooling:$composeVersion")
@@ -66,7 +66,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.0.0-alpha10"
-        kotlinCompilerVersion = "1.4.21"
+        kotlinCompilerExtensionVersion = "1.0.0-beta01"
+        kotlinCompilerVersion = "1.4.30"
     }
 }
