@@ -27,7 +27,7 @@ struct StarredRepositoryListView: View {
         case is DataState.Success:
             List {
                 ForEach((self.viewModel.state as! DataState.Success).data, id: \.self) { repository in
-                    RepositoryListItem(repository: repository, onClick: {repo in print("clicked \(repo.name)")})
+                    Repository(repository: repository, onClick: {repo in viewModel.unstarRepository(repository: repo)})
                 }
             }
         case is DataState.Loading:

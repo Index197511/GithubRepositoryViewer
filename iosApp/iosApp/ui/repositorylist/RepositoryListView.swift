@@ -27,7 +27,7 @@ struct RepositoryListView: View {
         case is DataState.Success:
             List {
                 ForEach((self.viewModel.state as! DataState.Success).data, id: \.self) { repository in
-                    RepositoryListItem(repository: repository) { repository in
+                    Repository(repository: repository) { repository in
                         viewModel.starRepository(repository: repository)
                     }
                 }

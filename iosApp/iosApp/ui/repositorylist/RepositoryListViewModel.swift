@@ -30,7 +30,7 @@ class RepositoryListViewModel : ObservableObject {
             completionHandler: {(unit, err) in})
     }
     
-    func starRepository(repository: Repository) {
+    func starRepository(repository: shared.Repository) {
         starredRepoRepository.insertStarredRepo(repository: repository, completionHandler: {(unit, err) in})
     }
 }

@@ -11,20 +11,24 @@ import shared
 import SwiftUI
 
 class StarredRepoRepositoryListViewModel : ObservableObject {
-    let repository: IStarredRepoRepository
+    let starRepoRepository: IStarredRepoRepository
     @Published var state: DataState
     
     init(repository: IStarredRepoRepository) {
-        self.repository = repository
+        self.starRepoRepository = repository
         self.state = DataState.Init()
     }
     
     func getStarredRepositories() {
-        repository.getAllStarredRepo().collect(
-            collector: Collector<[Repository]>{res in
+        starRepoRepository.getAllStarredRepo().collect(
+            collector: Collector<[shared.Repository]>{res in
                 self.state = DataState.Success(data: res)
                 
             },
             completionHandler: {(unit, err) in})
+    }
+    
+    func unstarRepository(repository: shared.Repository) {
+        starRepoRepository.removeStarredRepo(id: repository.id, completionHandler: {(unit, err) in})
     }
 }
