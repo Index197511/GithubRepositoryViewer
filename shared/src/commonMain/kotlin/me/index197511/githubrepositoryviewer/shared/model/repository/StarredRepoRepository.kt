@@ -6,5 +6,5 @@ import me.index197511.githubrepositoryviewer.shared.model.Repository
 interface IStarredRepoRepository {
     fun getAllStarredRepo(): Flow<List<Repository>>
     suspend fun insertStarredRepo(repository: Repository)
-    suspend fun removeStarredRepo(id: Int)
+    suspend fun removeStarredRepo(id: Long)
 }

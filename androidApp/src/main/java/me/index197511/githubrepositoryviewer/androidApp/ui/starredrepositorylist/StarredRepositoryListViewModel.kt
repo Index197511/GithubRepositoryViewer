@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.shared.model.DataState
+import me.index197511.githubrepositoryviewer.shared.model.Repository
 import me.index197511.githubrepositoryviewer.shared.model.repository.IStarredRepoRepository
 
 class StarredRepositoryListViewModel(private val starredRepoRepository: IStarredRepoRepository) :
@@ -26,6 +27,12 @@ class StarredRepositoryListViewModel(private val starredRepoRepository: IStarred
                 Log.i("Index197511", it.toString())
                 _starredRepositories.value = DataState.Success(it)
             }
+        }
+    }
+
+    fun unstarRepository(repository: Repository) {
+        viewModelScope.launch {
+            starredRepoRepository.removeStarredRepo(repository.id)
         }
     }
 }

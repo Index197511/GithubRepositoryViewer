@@ -5,9 +5,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -15,6 +17,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import androidx.fragment.app.Fragment
@@ -53,16 +56,15 @@ class StarredRepositoryListFragment : Fragment() {
 @Composable
 fun StarredRepositoryListView(viewModel: StarredRepositoryListViewModel) {
     val starredRepositories: DataState by viewModel.starredRepositories.collectAsState(initial = DataState.Init)
+
     when (val res: DataState = starredRepositories) {
         is DataState.Loading -> {
             LoadingView()
         }
         is DataState.Success -> {
-            LazyColumn {
-                items(res.data) {
-                    RepositoryListItem(repository = it)
-                }
-            }
+            StarredRepositoryList(
+                repositories = res.data,
+                onClick = { viewModel.unstarRepository(it) })
         }
         is DataState.Error -> {
             Log.i("Index197511", res.exception)
@@ -74,10 +76,32 @@ fun StarredRepositoryListView(viewModel: StarredRepositoryListViewModel) {
 }
 
 @Composable
-fun RepositoryListItem(repository: Repository) {
+fun StarredRepositoryList(
+    repositories: List<Repository>,
+    onClick: (repository: Repository) -> Unit
+) {
+    val context = LocalContext.current
+
+    LazyColumn {
+        items(repositories) {
+            StarredRepository(repository = it) { repository ->
+                onClick(repository)
+                Toast.makeText(
+                    context,
+                    "unstarred ${repository.name}",
+                    Toast.LENGTH_SHORT
+                )
+                    .show()
+            }
+        }
+    }
+}
+
+@Composable
+fun StarredRepository(repository: Repository, onClick: (repository: Repository) -> Unit) {
     Column(modifier = Modifier
         .fillMaxWidth()
-        .clickable { Log.i("Index197511", "CLICKED") }
+        .clickable { onClick(repository) }
         .wrapContentHeight()
         .padding(16.dp)
         .zIndex(8f)

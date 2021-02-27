@@ -3,7 +3,7 @@ package me.index197511.githubrepositoryviewer.androidApp.ui.common.repository
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -21,7 +21,7 @@ fun Language(language: String) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Box(
             modifier = Modifier
-                .preferredSize(12.dp)
+                .size(12.dp)
                 .clip(CircleShape)
                 .background(Color.fromString("#FF00FF"))
         )

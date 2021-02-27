@@ -4,21 +4,21 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.preferredSize
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,8 +27,10 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.index197511.githubrepositoryviewer.androidApp.ui.util.Space
+import kotlin.coroutines.CoroutineContext
 
 @Composable
 fun User(author: String, avatarUrl: String) {
@@ -42,11 +44,13 @@ fun User(author: String, avatarUrl: String) {
 @Composable
 fun Avatar(avatarUrl: String) {
     val image = remember { mutableStateOf<ImageBitmap?>(null) }
-    val context = AmbientContext.current
+    val context = LocalContext.current
+    val job = Job()
+    val coroutineContext: CoroutineContext = Dispatchers.Main + job
 
-    onCommit(avatarUrl) {
+    DisposableEffect(avatarUrl) {
         val glide = Glide.with(context)
-        val job = CoroutineScope(Dispatchers.Main).launch {
+        CoroutineScope(coroutineContext).launch {
             glide.asBitmap().load(avatarUrl).into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     image.value = resource.asImageBitmap()
@@ -57,20 +61,22 @@ fun Avatar(avatarUrl: String) {
                 }
             })
         }
+
         onDispose {
             image.value = null
             job.cancel()
         }
     }
 
+
     image.value?.let {
         Surface(
             modifier = Modifier
-                .preferredSize(30.dp)
+                .size(30.dp)
                 .clip(CircleShape),
             color = MaterialTheme.colors.onSurface.copy(0.2f)
         ) {
-            Image(bitmap = it)
+            Image(bitmap = it, contentDescription = null)
         }
     }
 
